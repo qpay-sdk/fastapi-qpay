@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi-qpay"
+version = "1.0.0"
+description = "QPay V2 payment integration for FastAPI"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = ["qpay-py>=1.0", "fastapi>=0.100.0", "pydantic-settings>=2.0.0"]
+
+[project.urls]
+Repository = "https://github.com/qpay-sdk/fastapi-qpay"
