@@ -1,5 +1,8 @@
 # fastapi-qpay
 
+[![PyPI](https://img.shields.io/pypi/v/fastapi-qpay)](https://pypi.org/project/fastapi-qpay/)
+[![CI](https://github.com/qpay-sdk/fastapi-qpay/actions/workflows/ci.yml/badge.svg)](https://github.com/qpay-sdk/fastapi-qpay/actions)
+
 QPay V2 payment integration for FastAPI.
 
 ## Install
