@@ -2,6 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/fastapi-qpay)](https://pypi.org/project/fastapi-qpay/)
 [![CI](https://github.com/qpay-sdk/fastapi-qpay/actions/workflows/ci.yml/badge.svg)](https://github.com/qpay-sdk/fastapi-qpay/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 QPay V2 payment integration for FastAPI.
 
