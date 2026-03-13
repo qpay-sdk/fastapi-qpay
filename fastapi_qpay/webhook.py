@@ -1,30 +1,22 @@
-from fastapi import Depends
-from pydantic import BaseModel
+from fastapi import Depends, Query
+from fastapi.responses import PlainTextResponse
 from qpay import AsyncQPayClient, PaymentCheckRequest
 
 from .dependencies import get_qpay_client
 
 
-class WebhookPayload(BaseModel):
-    invoice_id: str
-
-
-class WebhookResponse(BaseModel):
-    status: str
-    message: str = ""
-
-
 async def webhook_handler(
-    payload: WebhookPayload,
+    qpay_payment_id: str = Query(...),
     client: AsyncQPayClient = Depends(get_qpay_client),
-) -> WebhookResponse:
-    try:
-        result = await client.check_payment(PaymentCheckRequest(
-            object_type="INVOICE",
-            object_id=payload.invoice_id,
-        ))
-        if result.rows:
-            return WebhookResponse(status="paid", message=f"Payment confirmed for {payload.invoice_id}")
-        return WebhookResponse(status="unpaid")
-    except Exception as e:
-        return WebhookResponse(status="error", message=str(e))
+) -> PlainTextResponse:
+    """QPay callback handler.
+
+    QPay sends a GET request with ``qpay_payment_id`` as a query parameter.
+    The handler verifies the payment via ``check_payment()`` and returns
+    ``SUCCESS`` as plain text (HTTP 200).
+    """
+    await client.check_payment(PaymentCheckRequest(
+        object_type="INVOICE",
+        object_id=qpay_payment_id,
+    ))
+    return PlainTextResponse("SUCCESS")

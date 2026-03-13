@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
+from fastapi.responses import PlainTextResponse
 from qpay import AsyncQPayClient, CreateSimpleInvoiceRequest, PaymentCheckRequest
 
 from .config import QPaySettings, get_settings
 from .dependencies import get_qpay_client
-from .webhook import WebhookPayload, WebhookResponse, webhook_handler
+from .webhook import webhook_handler
 
 
 def create_qpay_router(prefix: str = "", tags: list[str] | None = None) -> APIRouter:
@@ -11,12 +12,12 @@ def create_qpay_router(prefix: str = "", tags: list[str] | None = None) -> APIRo
         tags = ["qpay"]
     router = APIRouter(prefix=prefix, tags=tags)
 
-    @router.post("/webhook", response_model=WebhookResponse)
+    @router.get("/webhook", response_class=PlainTextResponse)
     async def _webhook(
-        payload: WebhookPayload,
+        qpay_payment_id: str = Query(...),
         client: AsyncQPayClient = Depends(get_qpay_client),
     ):
-        return await webhook_handler(payload, client)
+        return await webhook_handler(qpay_payment_id, client)
 
     @router.post("/invoice")
     async def _create_invoice(
